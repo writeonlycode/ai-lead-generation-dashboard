@@ -33,7 +33,7 @@ alter table public.leads enable row level security;
 create policy "Anyone can insert leads"
 on public.leads
 for insert
-with check (true);
+with check (auth.role() = 'authenticated');
 
 -- Only authenticated users can read leads
 create policy "Authenticated users can view leads"
