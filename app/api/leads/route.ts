@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
+
+
 
 export async function POST(req: Request) {
   try {
-    const supabase = await createClient()
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     // Parse body
     const body = await req.json()
@@ -25,6 +30,8 @@ export async function POST(req: Request) {
         email,
         message,
       })
+      .select()
+      .single()
 
     if (error) {
       console.error('Insert error:', error)
