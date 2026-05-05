@@ -6,10 +6,15 @@ export default function Home() {
     return (
         <div className="flex flex-col justify-center grow gap-20 max-w-prose mx-auto py-10">
             <Hero />
-            <section className="flex items-center justify-center">
+            <section className="flex items-center justify-center gap-4">
                 <Button asChild>
                     <Link href="/dashboard">
                         Go to Dashboard
+                    </Link>
+                </Button>
+                <Button asChild variant="secondary">
+                    <Link href="/contact">
+                        Go to Contact Form
                     </Link>
                 </Button>
             </section>
