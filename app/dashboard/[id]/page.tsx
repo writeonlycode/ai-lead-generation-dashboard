@@ -63,43 +63,45 @@ export default async function LeadDetailsPage({ params }: { params: Promise<{ id
                             {lead.message}
                         </div>
                     </div>
-                    <div className='border rounded p-4 flex flex-col gap-4'>
-                        <h2 className='text-lg leading-none font-bold'>
-                            AI Summary
-                        </h2>
-                        <div>
-                            <div className='leading-none font-semibold'>
-                                Score
+                    {leadAnalysis &&
+                        <div className='border rounded p-4 flex flex-col gap-4'>
+                            <h2 className='text-lg leading-none font-bold'>
+                                AI Summary
+                            </h2>
+                            <div>
+                                <div className='leading-none font-semibold'>
+                                    Score
+                                </div>
+                                <div className='text-sm text-muted-foreground'>
+                                    {leadAnalysis.score}
+                                </div>
                             </div>
-                            <div className='text-sm text-muted-foreground'>
-                                {leadAnalysis.score}
+                            <div>
+                                <div className='leading-none font-semibold'>
+                                    Label
+                                </div>
+                                <div className='text-sm text-muted-foreground'>
+                                    {leadAnalysis.label}
+                                </div>
+                            </div>
+                            <div>
+                                <div className='leading-none font-semibold'>
+                                    Intent Summary
+                                </div>
+                                <div className='text-sm text-muted-foreground'>
+                                    {leadAnalysis.intent_summary}
+                                </div>
+                            </div>
+                            <div>
+                                <div className='leading-none font-semibold'>
+                                    Suggested Action
+                                </div>
+                                <div className='text-sm text-muted-foreground'>
+                                    {leadAnalysis.suggested_action}
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <div className='leading-none font-semibold'>
-                                Label
-                            </div>
-                            <div className='text-sm text-muted-foreground'>
-                                {leadAnalysis.label}
-                            </div>
-                        </div>
-                        <div>
-                            <div className='leading-none font-semibold'>
-                                Intent Summary
-                            </div>
-                            <div className='text-sm text-muted-foreground'>
-                                {leadAnalysis.intent_summary}
-                            </div>
-                        </div>
-                        <div>
-                            <div className='leading-none font-semibold'>
-                                Suggested Action
-                            </div>
-                            <div className='text-sm text-muted-foreground'>
-                                {leadAnalysis.suggested_action}
-                            </div>
-                        </div>
-                    </div>
+                    }
                     <LeadStatusSelect id={lead.id} currentStatus={lead.status} />
                 </CardContent>
                 <CardFooter className="flex gap-2">
