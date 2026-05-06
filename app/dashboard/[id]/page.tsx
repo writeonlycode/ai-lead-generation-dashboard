@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { Badge } from "@/components/ui/badge"
 import {
     Card,
     CardContent,
@@ -8,6 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { LeadStatusSelect } from '@/components/leads/lead-status-select';
 
 export default async function LeadDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -31,22 +31,79 @@ export default async function LeadDetailsPage({ params }: { params: Promise<{ id
         return <div>Error loading lead: {JSON.stringify(error)}</div>
     }
 
+    const date = new Date(lead.created_at)
+
+
+    const { data: leadAnalysis, error: leadAnalysisError } = await supabase
+        .from('lead_analysis')
+        .select('*')
+        .eq('lead_id', id)
+        .single()
+
     return (
         <div className='py-6 grow flex-col justify-center flex'>
             <Card className="mx-auto w-full max-w-prose">
                 <CardHeader>
                     <CardTitle>{lead.name}</CardTitle>
                     <CardDescription>
-                        {lead.email}
+                        <div>
+                            {lead.email}
+                        </div>
+                        <div>
+                            {date.toLocaleString()}
+                        </div>
                     </CardDescription>
                 </CardHeader>
-                <CardContent>
-                    {lead.message}
+                <CardContent className='flex flex-col gap-4'>
+                    <div>
+                        <div className='leading-none font-semibold'>
+                            Message
+                        </div>
+                        <div className='text-sm text-muted-foreground'>
+                            {lead.message}
+                        </div>
+                    </div>
+                    <div className='border rounded p-4 flex flex-col gap-4'>
+                        <h2 className='text-lg leading-none font-bold'>
+                            AI Summary
+                        </h2>
+                        <div>
+                            <div className='leading-none font-semibold'>
+                                Score
+                            </div>
+                            <div className='text-sm text-muted-foreground'>
+                                {leadAnalysis.score}
+                            </div>
+                        </div>
+                        <div>
+                            <div className='leading-none font-semibold'>
+                                Label
+                            </div>
+                            <div className='text-sm text-muted-foreground'>
+                                {leadAnalysis.label}
+                            </div>
+                        </div>
+                        <div>
+                            <div className='leading-none font-semibold'>
+                                Intent Summary
+                            </div>
+                            <div className='text-sm text-muted-foreground'>
+                                {leadAnalysis.intent_summary}
+                            </div>
+                        </div>
+                        <div>
+                            <div className='leading-none font-semibold'>
+                                Suggested Action
+                            </div>
+                            <div className='text-sm text-muted-foreground'>
+                                {leadAnalysis.suggested_action}
+                            </div>
+                        </div>
+                    </div>
+                    <LeadStatusSelect id={lead.id} currentStatus={lead.status} />
                 </CardContent>
                 <CardFooter className="flex gap-2">
-                    <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
-                        {lead.status}
-                    </Badge>
+
                 </CardFooter>
             </Card>
         </div>

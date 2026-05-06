@@ -44,6 +44,9 @@ LeadAnalysis {
   intent_summary: string
   suggested_action: string
 
+  raw_response: string   // full AI output
+  model: string         
+
   created_at: timestamp
 }
 ```
